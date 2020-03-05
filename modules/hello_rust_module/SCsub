@@ -1,0 +1,7 @@
+Import('env')
+
+env_rust = env.Clone()
+
+env_rust.add_source_files(env.modules_sources, "*.cpp")
+env_rust.Append(LIBPATH=['target/debug'])
+env_rust.Append(LIBS=['hello_rust_module'])
