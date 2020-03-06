@@ -1,7 +1,3 @@
-//
-// Created by mario on 3/4/2020.
-//
-
 #ifndef GODOT_RUSTCALLER_H
 #define GODOT_RUSTCALLER_H
 

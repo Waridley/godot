@@ -1,7 +1,3 @@
-//
-// Created by mario on 3/4/2020.
-//
-
 #include "register_types.h"
 
 #include "core/class_db.h"
