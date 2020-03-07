@@ -10,4 +10,3 @@ edition = "2018"
 crate-type = ["staticlib"]
 
 [dependencies]
-gdnative = { git = "https://github.com/Waridley/godot-rust.git" }

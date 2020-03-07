@@ -1,8 +1,8 @@
 #include "RustCaller.h"
 #include "modules/hello_rust_module/include/hello_rust_module.h"
 
-void RustCaller::hello_rust() {
-    hello();
+int32_t RustCaller::hello_rust() {
+    return hello();
 }
 
 void RustCaller::_bind_methods() {
