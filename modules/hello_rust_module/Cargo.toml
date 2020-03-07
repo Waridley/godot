@@ -10,3 +10,4 @@ edition = "2018"
 crate-type = ["staticlib"]
 
 [dependencies]
+gdnative = "0.7.0"
