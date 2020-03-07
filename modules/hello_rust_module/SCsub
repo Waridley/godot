@@ -1,4 +1,8 @@
 Import('env')
+import os
+
+os.system("cargo build --release")
+Command("lib/hello_rust_module.windows.tools.64.lib", "target/release/hello_rust_module.lib", Copy("$TARGET", "$SOURCE"))
 
 env_rust = env.Clone()
 
