@@ -5,6 +5,6 @@
 
 extern "C" {
 
-int32_t hello();
+void hello();
 
 } // extern "C"
