@@ -10,7 +10,7 @@ protected:
     static void _bind_methods();
 
 public:
-    int32_t hello_rust();
+    void hello_rust();
 
     RustCaller();
 };
