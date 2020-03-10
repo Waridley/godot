@@ -3,9 +3,9 @@ extern crate bindgen;
 use std::path::PathBuf;
 
 fn main() {
-    // use std::env;
-    // let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
-    let out_path = PathBuf::from("src");
+    use std::env;
+    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
+    // let out_path = PathBuf::from("src");
 
     let out_file = out_path.join("bindings.rs");
 
