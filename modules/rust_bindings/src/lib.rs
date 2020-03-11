@@ -118,3 +118,4 @@ impl From<&str> for godot_string {
         }
     }
 }
+
