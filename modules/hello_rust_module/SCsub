@@ -2,13 +2,16 @@ Import('env')
 import os
 
 os.system("cargo build --release")
-Command("lib/hello_rust_module.windows.tools.64.lib", "target/release/hello_rust_module.lib", Copy("$TARGET", "$SOURCE"))
 
 for f in Glob("target/release/*hello_rust_module*"):
-    print(f.name.replace("hello_rust_module", "hello_rust_module.windows.tools.64"))
+    new_name = f.name.replace("hello_rust_module", "hello_rust_module." + env["platform"] + ".tools.64")
+    Command("lib/" + new_name, f, Copy("$TARGET", "$SOURCE"))
+
 
 env.Append(LIBPATH=["#modules/hello_rust_module/lib"])
-env.Append(LIBS=["hello_rust_module", "advapi32", "ws2_32", "userenv", "msvcrt"])
+env.Append(LIBS=["hello_rust_module"])
+if env["platform"] == "windows":
+    env.Append(LIBS=["advapi32", "ws2_32", "userenv", "msvcrt"])
 
 
 env_rust = env.Clone()
