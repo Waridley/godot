@@ -8,7 +8,8 @@ for f in Glob("target/release/*hello_rust_module*"):
     print(f.name.replace("hello_rust_module", "hello_rust_module.windows.tools.64"))
 
 env.Append(LIBPATH=["#modules/hello_rust_module/lib"])
-env.Append(LIBS=["hello_rust_module"])
+env.Append(LIBS=["hello_rust_module", "advapi32", "ws2_32", "userenv", "msvcrt"])
+
 
 env_rust = env.Clone()
 

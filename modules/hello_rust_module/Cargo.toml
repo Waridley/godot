@@ -11,3 +11,6 @@ crate-type = ["staticlib"]
 
 [dependencies]
 godot_module_bindings = { path = "../rust_bindings" }
+
+[build-dependencies]
+cbindgen = "0.13.1"

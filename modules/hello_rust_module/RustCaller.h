@@ -11,6 +11,7 @@ protected:
 
 public:
     void hello_rust();
+    void print_rid(RID rid);
 
     RustCaller();
 };
