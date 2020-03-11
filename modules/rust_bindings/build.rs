@@ -11,12 +11,21 @@ fn main() {
 
     println!("cargo:rerun-if-changed=headers.h");
 
-    let bindings = bindgen::Builder::default()
+    let mut builder = bindgen::Builder::default()
         .clang_arg("-x").clang_arg("c++")
         .clang_arg("-I../../")
-        .clang_arg("-I../gdnative/include/")
-        .clang_arg("-I../../platform/windows/")
-        .header("headers.h")
+        .clang_arg("-I../gdnative/include/");
+    builder = if cfg!(target_os = "windows") {
+        builder.clang_arg("-I../../platform/windows/")
+    } else if cfg!(target_os = "linux") {
+        builder.clang_arg("-I../../platform/x11/")
+    } else if cfg!(target_os = "macos") {
+        builder.clang_arg("-I../../platform/osx/")
+    } else {
+        builder
+    };
+
+    let bindings = builder.header("headers.h")
         .whitelist_type("godot.*")
         .whitelist_function("godot.*")
         .whitelist_var("godot.*")
@@ -25,6 +34,7 @@ fn main() {
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .generate()
         .expect("Failed to generate bindings");
+
 
     let out_file_str = out_file.to_str().unwrap().to_owned();
     println!("Writing bindings to {}", out_file_str);

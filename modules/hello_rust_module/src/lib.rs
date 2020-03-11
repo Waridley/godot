@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate godot_module_bindings as gd;
 
-use gd::{godot_string_chars_to_utf8_with_len, godot_print, godot_string, godot_rid, godot_rid_get_id, RID, gdprint_str, gdprintln};
+use gd::{godot_string, godot_rid, godot_rid_get_id, RID, gdprint_str, gdprintln};
 use std::intrinsics::transmute;
 
 
