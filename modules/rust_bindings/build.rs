@@ -21,11 +21,13 @@ fn main() {
         .whitelist_function("godot.*")
         .whitelist_var("godot.*")
         .whitelist_type("GDNATIVE.*")
+        .whitelist_type("RID")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .generate()
         .expect("Failed to generate bindings");
 
     let out_file_str = out_file.to_str().unwrap().to_owned();
+    println!("Writing bindings to {}", out_file_str);
     bindings.write_to_file(out_file)
         .expect(format!("Coudln't write bindings to {}", out_file_str).as_str());
 }
