@@ -32,6 +32,7 @@ fn main() {
         .whitelist_type("GDNATIVE.*")
         .whitelist_type("RID")
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
+        .rustfmt_bindings(true)
         .generate()
         .expect("Failed to generate bindings");
 

@@ -1,5 +1,5 @@
 #include "RustCaller.h"
-#include "bindings.h"
+#include "bindings.gen.h"
 
 void RustCaller::hello_rust() {
     hello();
