@@ -6,18 +6,21 @@ print("Target: ", env["target"])
 print("Tools: ", env["tools"])
 print("Bits: ", env["bits"])
 
-if env["platform"] == "windows":
-    os.system("cargo build --release --target x86_64-pc-windows-msvc")
-elif env["platform"] == "x11":
-    os.system("cargo build --release --target x86_64-unknown-linux-gnu")
-elif env["platform"] == "osx":
-    os.system("cargo build --release --target x86_64-apple-darwin")
-elif env["platform"] == "javascript":
-    os.system("cargo build --release --target wasm32-unknown-unknown")
-else:
-    os.system("cargo build --release")
+target = ""
 
-for path in Glob("target/release/*hello_rust_module*"):
+if env["platform"] == "windows":
+    target = "x86_64-pc-windows-msvc"
+elif env["platform"] == "x11":
+    target = "x86_64-unknown-linux-gnu"
+elif env["platform"] == "osx":
+    target = "x86_64-apple-darwin"
+elif env["platform"] == "javascript":
+    target = "wasm32-unknown-unknown"
+
+os.system("cargo build --release --target " + target)
+
+
+for path in Glob("target/" + target + "/release/*hello_rust_module*"):
     new_name = path.name.replace("hello_rust_module", "hello_rust_module." + env["platform"] + ".tools.64")
     Command("lib/" + new_name, path, Copy("$TARGET", "$SOURCE"))
 
