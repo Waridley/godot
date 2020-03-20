@@ -9,6 +9,8 @@ void register_hello_rust_module_types() {
     rust_caller = memnew(RustCaller);
     Engine::get_singleton()->add_singleton(Engine::Singleton("RustCaller", rust_caller));
     ClassDB::register_class<RustCaller>();
+    ClassDB::register_class<AudioEffectMinus20db>();
+
 }
 
 void unregister_hello_rust_module_types() {

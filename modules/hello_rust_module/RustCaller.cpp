@@ -17,3 +17,17 @@ void RustCaller::_bind_methods() {
 RustCaller::RustCaller() {
 
 }
+
+void AudioEffectMinus20dbInstance::process(const AudioFrame *p_src_frames, AudioFrame *p_dst_frames, int p_frame_count) {
+    minus_20db(p_src_frames, p_dst_frames, p_frame_count);
+}
+
+bool AudioEffectMinus20dbInstance::process_silence() const {
+    return AudioEffectInstance::process_silence();
+}
+
+Ref<AudioEffectInstance> AudioEffectMinus20db::instance() {
+    Ref<AudioEffectMinus20dbInstance> ins;
+    ins.instance();
+    return ins;
+}

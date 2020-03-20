@@ -31,6 +31,11 @@ fn main() {
         .whitelist_var("godot.*")
         .whitelist_type("GDNATIVE.*")
         .whitelist_type("RID")
+        .whitelist_type("Variant")
+        .whitelist_type("PoolVector2Array")
+        .whitelist_type("AudioEffect")
+        .whitelist_type("AudioStreamGeneratorPlayback")
+
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .rustfmt_bindings(true)
         .generate()
