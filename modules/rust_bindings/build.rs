@@ -8,6 +8,7 @@ fn main() {
     // let out_path = PathBuf::from("src");
 
     let out_file = out_path.join("bindings.rs");
+    let out_file_str = out_file.to_str().unwrap().to_owned();
 
     println!("cargo:rerun-if-changed=headers.h");
 
@@ -35,14 +36,12 @@ fn main() {
         .whitelist_type("PoolVector2Array")
         .whitelist_type("AudioEffect")
         .whitelist_type("AudioStreamGeneratorPlayback")
-
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         .rustfmt_bindings(true)
         .generate()
         .expect("Failed to generate bindings");
 
 
-    let out_file_str = out_file.to_str().unwrap().to_owned();
     println!("Writing bindings to {}", out_file_str);
     bindings.write_to_file(out_file)
         .expect(format!("Coudln't write bindings to {}", out_file_str).as_str());

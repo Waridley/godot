@@ -19,9 +19,12 @@ elif env["platform"] == "javascript":
 
 os.system("cargo build --release --target " + target)
 
+type = "tools"
+if not env["tools"]:
+    type = "opt"
 
 for path in Glob("target/" + target + "/release/*hello_rust_module*"):
-    new_name = path.name.replace("hello_rust_module", "hello_rust_module." + env["platform"] + ".tools.64")
+    new_name = path.name.replace("hello_rust_module", "hello_rust_module." + env["platform"] + "." + type + ".64")
     Command("lib/" + new_name, path, Copy("$TARGET", "$SOURCE"))
 
 

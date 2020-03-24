@@ -5,10 +5,10 @@ use gd::{RID, godot_string, godot_rid, godot_rid_get_id, gdprint_str, gdprintln,
 use std::intrinsics::transmute;
 use std::slice;
 
-
 #[no_mangle]
 pub extern "C" fn hello() {
     let greeting = "Hello from Rust module!";
+    
     gdprint_str(greeting);
 }
 
