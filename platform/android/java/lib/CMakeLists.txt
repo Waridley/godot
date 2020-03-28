@@ -16,3 +16,5 @@ target_include_directories(${PROJECT_NAME}
         SYSTEM PUBLIC
         ${GODOT_ROOT_DIR}
         ${GODOT_ROOT_DIR}/modules/gdnative/include)
+
+add_definitions(-DALSA_ENABLED -DPULSEAUDIO_ENABLED -DWASAPI_ENABLED -DDEBUG_ENABLED)
