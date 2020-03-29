@@ -49,6 +49,7 @@ class AudioEffectPanner : public AudioEffect {
 
 	friend class AudioEffectPannerInstance;
 	float pan;
+	float prev_pan;
 
 protected:
 	static void _bind_methods();
