@@ -32,14 +32,22 @@
 
 void AudioEffectPannerInstance::process(const AudioFrame *p_src_frames, AudioFrame *p_dst_frames, int p_frame_count) {
 
-	float lvol = CLAMP(1.0 - base->pan, 0, 1);
-	float rvol = CLAMP(1.0 + base->pan, 0, 1);
+    float curr_pan = base->prev_pan;
+    float pan_inc = (base->pan - base->prev_pan) / p_frame_count;
+    float lvol, rvol;
+
 
 	for (int i = 0; i < p_frame_count; i++) {
 
+        lvol = CLAMP(1.0 - curr_pan, 0, 1);
+        rvol = CLAMP(1.0 + curr_pan, 0, 1);
+
 		p_dst_frames[i].l = p_src_frames[i].l * lvol + p_src_frames[i].r * (1.0 - rvol);
 		p_dst_frames[i].r = p_src_frames[i].r * rvol + p_src_frames[i].l * (1.0 - lvol);
+
+		curr_pan += pan_inc;
 	}
+	base->prev_pan = base->pan;
 }
 
 Ref<AudioEffectInstance> AudioEffectPanner::instance() {
