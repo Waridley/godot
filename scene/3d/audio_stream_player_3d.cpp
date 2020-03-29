@@ -130,7 +130,7 @@ void AudioStreamPlayer3D::_calc_output_vol(const Vector3 &source_dir, real_t tig
 
 void AudioStreamPlayer3D::_mix_audio() {
 
-	if (!stream_playback.is_valid() || !active ||
+	if (!stream_playback.is_valid() || !active || !output_ready ||
 			(stream_paused && !stream_paused_fade_out)) {
 		return;
 	}
@@ -702,17 +702,10 @@ float AudioStreamPlayer3D::get_pitch_scale() const {
 void AudioStreamPlayer3D::play(float p_from_pos) {
 
 	if (stream_playback.is_valid()) {
-        for(int i = 0; i < MAX_OUTPUTS; i++) {
-            outputs[i] = Output();
-            for(int j = 0; j < 7; j++) {
-                outputs[i].vol[j] = AudioFrame(10000.0f, 10000.0f);
-                outputs[i].reverb_vol[j] = AudioFrame(1.0f, 1.0f);
-            }
-        }
-		active = true;
+        output_ready = false;
 		setplay = p_from_pos;
-		output_ready = false;
 		set_physics_process_internal(true);
+        active = true;
 	}
 }
 
