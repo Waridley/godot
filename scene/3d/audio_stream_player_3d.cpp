@@ -130,7 +130,7 @@ void AudioStreamPlayer3D::_calc_output_vol(const Vector3 &source_dir, real_t tig
 
 void AudioStreamPlayer3D::_mix_audio() {
 
-	if (!stream_playback.is_valid() || !active || !output_ready ||
+	if (!stream_playback.is_valid() || !active ||
 			(stream_paused && !stream_paused_fade_out)) {
 		return;
 	}
