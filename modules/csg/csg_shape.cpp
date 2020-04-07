@@ -118,6 +118,10 @@ bool CSGShape::get_collision_layer_bit(int p_bit) const {
 	return get_collision_layer() & (1 << p_bit);
 }
 
+Ref<ConcavePolygonShape> CSGShape::get_root_collision_shape() {
+    return root_collision_shape;
+}
+
 bool CSGShape::is_root_shape() const {
 
 	return !parent;
@@ -620,6 +624,8 @@ void CSGShape::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_collision_layer_bit", "bit", "value"), &CSGShape::set_collision_layer_bit);
 	ClassDB::bind_method(D_METHOD("get_collision_layer_bit", "bit"), &CSGShape::get_collision_layer_bit);
+
+	ClassDB::bind_method(D_METHOD("get_root_collision_shape"), &CSGShape::get_root_collision_shape);
 
 	ClassDB::bind_method(D_METHOD("set_calculate_tangents", "enabled"), &CSGShape::set_calculate_tangents);
 	ClassDB::bind_method(D_METHOD("is_calculating_tangents"), &CSGShape::is_calculating_tangents);

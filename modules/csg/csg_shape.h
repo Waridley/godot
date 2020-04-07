@@ -142,6 +142,8 @@ public:
 	void set_collision_mask_bit(int p_bit, bool p_value);
 	bool get_collision_mask_bit(int p_bit) const;
 
+	Ref<ConcavePolygonShape> get_root_collision_shape();
+
 	void set_snap(float p_snap);
 	float get_snap() const;
 

@@ -8,3 +8,5 @@ edition = "2018"
 
 [build-dependencies]
 bindgen = "0.53.1"
+
+[workspace]

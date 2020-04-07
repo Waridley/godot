@@ -1,11 +1,6 @@
 Import('env')
 import os
 
-print("Platform: ", env["platform"])
-print("Target: ", env["target"])
-print("Tools: ", env["tools"])
-print("Bits: ", env["bits"])
-
 target = ""
 
 if env["platform"] == "windows":
@@ -25,17 +20,16 @@ if not env["tools"]:
 elif env["target"] == "release_debug":
     type = "opt.tools"
 
-for path in Glob("target/" + target + "/release/*hello_rust_module*"):
-    new_name = path.name.replace("hello_rust_module", "hello_rust_module." + env["platform"] + "." + type + ".64")
+for path in Glob("target/" + target + "/release/*radar_effect*"):
+    new_name = path.name.replace("radar_effect", "radar_effect." + env["platform"] + "." + type + ".64")
     Command("lib/" + new_name, path, Copy("$TARGET", "$SOURCE"))
 
 
-env.Append(LIBPATH=["#modules/hello_rust_module/lib"])
-env.Append(LIBS=["hello_rust_module"])
+env.Append(LIBPATH=["#modules/radar_effect/lib"])
+env.Append(LIBS=["radar_effect"])
 if env["platform"] == "windows":
     env.Append(LIBS=["advapi32", "ws2_32", "userenv", "msvcrt"])
 
+env_radar_effect = env.Clone()
 
-env_rust = env.Clone()
-
-env_rust.add_source_files(env.modules_sources, "*.cpp")
+env_radar_effect.add_source_files(env.modules_sources, "*.cpp")
