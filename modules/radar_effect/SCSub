@@ -12,7 +12,7 @@ elif env["platform"] == "osx":
 elif env["platform"] == "javascript":
     target = "wasm32-unknown-unknown"
 
-os.system("cargo build --release --target " + target)
+os.system("cargo build --target " + target)
 
 type = "tools"
 if not env["tools"]:
@@ -20,7 +20,7 @@ if not env["tools"]:
 elif env["target"] == "release_debug":
     type = "opt.tools"
 
-for path in Glob("target/" + target + "/release/*radar_effect*"):
+for path in Glob("target/" + target + "/debug/*radar_effect*"):
     new_name = path.name.replace("radar_effect", "radar_effect." + env["platform"] + "." + type + ".64")
     Command("lib/" + new_name, path, Copy("$TARGET", "$SOURCE"))
 
