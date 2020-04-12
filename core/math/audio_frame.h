@@ -138,8 +138,9 @@ struct AudioFrame {
 		r = p_v2.y;
 	}
 	_ALWAYS_INLINE_ AudioFrame() {
-	    l = 0.0f;
-	    r = 0.0f;
+		// Testing for pops from uninitialized frames
+	    l = 10000.0f;
+	    r = 10000.0f;
 	}
 };
 

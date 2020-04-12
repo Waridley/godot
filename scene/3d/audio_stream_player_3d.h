@@ -72,12 +72,22 @@ private:
 
 		AudioFilterSW filter;
 		AudioFilterSW::Processor filter_process[8];
-		AudioFrame vol[4];
+		AudioFrame vol[4] = {
+				AudioFrame(0.0, 0.0),
+				AudioFrame(0.0, 0.0),
+				AudioFrame(0.0, 0.0),
+				AudioFrame(0.0, 0.0)
+		};
 		float filter_gain;
 		float pitch_scale;
 		int bus_index;
 		int reverb_bus_index;
-		AudioFrame reverb_vol[4];
+		AudioFrame reverb_vol[4] = {
+				AudioFrame(0.0, 0.0),
+				AudioFrame(0.0, 0.0),
+				AudioFrame(0.0, 0.0),
+				AudioFrame(0.0, 0.0)
+		};
 		Viewport *viewport; //pointer only used for reference to previous mix
 
 		Output() {
