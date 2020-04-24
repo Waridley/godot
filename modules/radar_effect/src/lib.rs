@@ -1,16 +1,8 @@
 #[macro_use]
 extern crate godot_module_bindings as gd;
 
-use gd::{AudioFrame,};
+use gd::AudioFrame;
 use std::slice;
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
 
 #[no_mangle]
 pub extern "C" fn radar_process(first_src_frame: &AudioFrame, first_dst_frame: &mut AudioFrame, frame_count: i32) {
