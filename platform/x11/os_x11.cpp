@@ -3940,6 +3940,10 @@ void OS_X11::update_real_mouse_position() {
 
 OS_X11::OS_X11() {
 
+#ifdef JACK_ENABLED
+	AudioDriverManager::add_driver(&driver_jack);
+#endif
+
 #ifdef PULSEAUDIO_ENABLED
 	AudioDriverManager::add_driver(&driver_pulseaudio);
 #endif
