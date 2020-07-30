@@ -79,7 +79,7 @@ void AudioStreamGenerator::_bind_methods() {
 }
 
 AudioStreamGenerator::AudioStreamGenerator() {
-	mix_rate = 44100;
+	mix_rate = AudioServer::get_singleton()->get_mix_rate();
 	buffer_len = 0.5;
 }
 
