@@ -89,7 +89,7 @@ void NativeScript::_bind_methods() {
 void NativeScript::_update_placeholder(PlaceHolderScriptInstance *p_placeholder) {
 	NativeScriptDesc *script_data = get_script_desc();
 
-	ERR_FAIL_COND(!script_data);
+	ERR_FAIL_COND_MSG(!script_data, "Couldn't find " + class_name + " class");
 
 	List<PropertyInfo> info;
 	get_script_property_list(&info);
