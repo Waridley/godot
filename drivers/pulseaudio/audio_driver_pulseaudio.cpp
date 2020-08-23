@@ -254,7 +254,7 @@ Error AudioDriverPulseAudio::init() {
 
 	int ret = pa_context_connect(pa_ctx, NULL, PA_CONTEXT_NOFLAGS, NULL);
 	if (ret < 0) {
-	    ERR_PRINT("Failed to connect to PulseAudio daemon: " + String(pa_strerror(pa_context_errno(pa_ctx))))
+		ERR_PRINT("Failed to connect to PulseAudio daemon: " + String(pa_strerror(pa_context_errno(pa_ctx))))
 
 		if (pa_ctx) {
 			pa_context_unref(pa_ctx);

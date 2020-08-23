@@ -789,55 +789,54 @@ Vector<String> String::split_spaces() const {
 }
 
 Vector<String> String::split_lines(bool p_allow_empty, int p_maxsplit) const {
-    Vector<String> ret;
+	Vector<String> ret;
 
-    if (length() > 0) {
+	if (length() > 0) {
 
-        int curr_line_begin = 0;
+		int curr_line_begin = 0;
 
-        CharType curr_char;
-        CharType next_char = get(0);
+		CharType curr_char;
+		CharType next_char = get(0);
 
-        for (int i = 0; i < length(); i++) {
-            curr_char = next_char;
-            next_char = get(i + 1); // will get the null terminator when i == length() - 1
+		for (int i = 0; i < length(); i++) {
+			curr_char = next_char;
+			next_char = get(i + 1); // will get the null terminator when i == length() - 1
 
-            auto advance = [&](CharType twin) {
-                if (next_char == twin) i++;
-                curr_line_begin = i + 1;
-                next_char = get(curr_line_begin);
-            };
+			auto advance = [&](CharType twin) {
+				if (next_char == twin) i++;
+				curr_line_begin = i + 1;
+				next_char = get(curr_line_begin);
+			};
 
-            auto on_match = [&](CharType twin) {
-                if ((!p_allow_empty) && (i == curr_line_begin)) {
-                    do { // skip all empty lines
-                        advance(twin);
-                        i++;
-                    } while (next_char == '\n' || next_char == '\r');
-                } else {
-                    ret.push_back(substr(curr_line_begin, i - curr_line_begin));
-                    advance(twin);
-                }
-            };
+			auto on_match = [&](CharType twin) {
+				if ((!p_allow_empty) && (i == curr_line_begin)) {
+					do { // skip all empty lines
+						advance(twin);
+						i++;
+					} while (next_char == '\n' || next_char == '\r');
+				} else {
+					ret.push_back(substr(curr_line_begin, i - curr_line_begin));
+					advance(twin);
+				}
+			};
 
-            switch (curr_char) {
-                case '\n':
-                    on_match('\r');
-                    break;
-                case '\r':
-                    on_match('\n');
-                    break;
-            }
+			switch (curr_char) {
+				case '\n':
+					on_match('\r');
+					break;
+				case '\r':
+					on_match('\n');
+					break;
+			}
 
-            if (p_maxsplit > 0 && ret.size() == p_maxsplit) break;
+			if (p_maxsplit > 0 && ret.size() == p_maxsplit) break;
+		}
+		ret.push_back(substr(curr_line_begin, -1)); // substr treats -1 as "the rest"
+	} else {
+		ret.push_back(*this);
+	}
 
-        }
-        ret.push_back(substr(curr_line_begin, -1)); // substr treats -1 as "the rest"
-    } else {
-    	ret.push_back(*this);
-    }
-
-    return ret;
+	return ret;
 }
 
 Vector<String> String::split(const String &p_splitter, bool p_allow_empty, int p_maxsplit) const {
@@ -2014,8 +2013,8 @@ static double built_in_strtod(const C *string, /* A decimal ASCII floating-point
 				 * string. */
 
 	/*
-     * Strip off leading blanks and check for a sign.
-     */
+	 * Strip off leading blanks and check for a sign.
+	 */
 
 	p = string;
 	while (*p == ' ' || *p == '\t' || *p == '\n') {
@@ -2032,9 +2031,9 @@ static double built_in_strtod(const C *string, /* A decimal ASCII floating-point
 	}
 
 	/*
-     * Count the number of digits in the mantissa (including the decimal
-     * point), and also locate the decimal point.
-     */
+	 * Count the number of digits in the mantissa (including the decimal
+	 * point), and also locate the decimal point.
+	 */
 
 	decPt = -1;
 	for (mantSize = 0;; mantSize += 1) {
@@ -2049,11 +2048,11 @@ static double built_in_strtod(const C *string, /* A decimal ASCII floating-point
 	}
 
 	/*
-     * Now suck up the digits in the mantissa. Use two integers to collect 9
-     * digits each (this is faster than using floating-point). If the mantissa
-     * has more than 18 digits, ignore the extras, since they can't affect the
-     * value anyway.
-     */
+	 * Now suck up the digits in the mantissa. Use two integers to collect 9
+	 * digits each (this is faster than using floating-point). If the mantissa
+	 * has more than 18 digits, ignore the extras, since they can't affect the
+	 * value anyway.
+	 */
 
 	pExp = p;
 	p -= mantSize;
@@ -2099,8 +2098,8 @@ static double built_in_strtod(const C *string, /* A decimal ASCII floating-point
 	}
 
 	/*
-     * Skim off the exponent.
-     */
+	 * Skim off the exponent.
+	 */
 
 	p = pExp;
 	if ((*p == 'E') || (*p == 'e')) {
@@ -2130,10 +2129,10 @@ static double built_in_strtod(const C *string, /* A decimal ASCII floating-point
 	}
 
 	/*
-     * Generate a floating-point number that represents the exponent. Do this
-     * by processing the exponent one bit at a time to combine many powers of
-     * 2 of 10. Then combine the exponent with the fraction.
-     */
+	 * Generate a floating-point number that represents the exponent. Do this
+	 * by processing the exponent one bit at a time to combine many powers of
+	 * 2 of 10. Then combine the exponent with the fraction.
+	 */
 
 	if (exp < 0) {
 		expSign = true;
