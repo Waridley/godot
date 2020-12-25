@@ -179,12 +179,12 @@ float sampleAO(in ivec2 ssC, in vec3 C, in vec3 n_C, in float ssDiskRadius, in f
 	float vv = dot(v, v);
 	float vn = dot(v, n_C);
 
-	const float epsilon = 0.01;
+	const float epsilon = 0.0001;
 	float radius2 = p_radius * p_radius;
 
 	// A: From the HPG12 paper
 	// Note large epsilon to avoid overdarkening within cracks
-	//return float(vv < radius2) * max((vn - bias) / (epsilon + vv), 0.0) * radius2 * 0.6;
+//	return float(vv < radius2) * max((vn - bias) / (epsilon + vv), 0.0) * radius2 * 0.6;
 
 	// B: Smoother transition to zero (lowers contrast, smoothing out corners). [Recommended]
 	float f = max(radius2 - vv, 0.0);
@@ -266,12 +266,12 @@ void main() {
 #endif
 	// Bilateral box-filter over a quad for free, respecting depth edges
 	// (the difference that this makes is subtle)
-	if (abs(dFdx(C.z)) < 0.02) {
-		A -= dFdx(A) * (float(ssC.x & 1) - 0.5);
-	}
-	if (abs(dFdy(C.z)) < 0.02) {
-		A -= dFdy(A) * (float(ssC.y & 1) - 0.5);
-	}
+//	if (abs(dFdx(C.z)) < 0.02) {
+//		A -= dFdx(A) * (float(ssC.x & 1) - 0.5);
+//	}
+//	if (abs(dFdy(C.z)) < 0.02) {
+//		A -= dFdy(A) * (float(ssC.y & 1) - 0.5);
+//	}
 
 	visibility = A;
 }
