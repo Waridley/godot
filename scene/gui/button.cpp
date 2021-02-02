@@ -81,7 +81,7 @@ void Button::_notification(int p_what) {
 
 			Ref<StyleBox> style = get_stylebox("normal");
 
-            Vector<String> lines = xl_text.split_lines();
+			Vector<String> lines = xl_text.split_lines();
 
 			switch (get_draw_mode()) {
 				case DRAW_NORMAL: {
@@ -202,44 +202,42 @@ void Button::_notification(int p_what) {
 			int num_lines = lines.size();
 			float line_height = font->get_height();
 
-			for(int i = 0; i < num_lines; i++) {
+			for (int i = 0; i < num_lines; i++) {
+				String line_text = lines[i];
+				Point2 text_ofs = (size - style->get_minimum_size() - icon_ofs - font->get_string_size(line_text) - Point2(_internal_margin[MARGIN_RIGHT] - _internal_margin[MARGIN_LEFT], 0)) / 2.0;
+				switch (align) {
+					case ALIGN_LEFT: {
+						if (_internal_margin[MARGIN_LEFT] > 0) {
+							text_ofs.x = style->get_margin(MARGIN_LEFT) + icon_ofs.x + _internal_margin[MARGIN_LEFT] + get_constant("hseparation");
+						} else {
+							text_ofs.x = style->get_margin(MARGIN_LEFT) + icon_ofs.x;
+						}
+						text_ofs.y += style->get_offset().y;
+					} break;
+					case ALIGN_CENTER: {
+						if (text_ofs.x < 0)
+							text_ofs.x = 0;
+						text_ofs += icon_ofs;
+						text_ofs += style->get_offset();
+					} break;
+					case ALIGN_RIGHT: {
+						if (_internal_margin[MARGIN_RIGHT] > 0) {
+							text_ofs.x = size.x - style->get_margin(MARGIN_RIGHT) - font->get_string_size(line_text).x - _internal_margin[MARGIN_RIGHT] - get_constant("hseparation");
+						} else {
+							text_ofs.x = size.x - style->get_margin(MARGIN_RIGHT) - font->get_string_size(line_text).x;
+						}
+						text_ofs.y += style->get_offset().y;
+					} break;
+				}
 
-                String line_text = lines[i];
-                Point2 text_ofs = (size - style->get_minimum_size() - icon_ofs - font->get_string_size(line_text) - Point2(_internal_margin[MARGIN_RIGHT] - _internal_margin[MARGIN_LEFT], 0)) / 2.0;
-                switch (align) {
-                    case ALIGN_LEFT: {
-                        if (_internal_margin[MARGIN_LEFT] > 0) {
-                            text_ofs.x = style->get_margin(MARGIN_LEFT) + icon_ofs.x + _internal_margin[MARGIN_LEFT] + get_constant("hseparation");
-                        } else {
-                            text_ofs.x = style->get_margin(MARGIN_LEFT) + icon_ofs.x;
-                        }
-                        text_ofs.y += style->get_offset().y;
-                    } break;
-                    case ALIGN_CENTER: {
-                        if (text_ofs.x < 0)
-                            text_ofs.x = 0;
-                        text_ofs += icon_ofs;
-                        text_ofs += style->get_offset();
-                    } break;
-                    case ALIGN_RIGHT: {
-                        if (_internal_margin[MARGIN_RIGHT] > 0) {
-                            text_ofs.x = size.x - style->get_margin(MARGIN_RIGHT) - font->get_string_size(line_text).x - _internal_margin[MARGIN_RIGHT] - get_constant("hseparation");
-                        } else {
-                            text_ofs.x = size.x - style->get_margin(MARGIN_RIGHT) - font->get_string_size(line_text).x;
-                        }
-                        text_ofs.y += style->get_offset().y;
-                    } break;
-                }
+				text_ofs.y += font->get_ascent();
+				text_ofs.y += line_height * (((float)i) - (((float)(num_lines - 1)) / 2.0));
+				font->draw(ci, text_ofs.floor(), line_text, color, clip_text ? text_clip : -1);
 
-                text_ofs.y += font->get_ascent();
-                text_ofs.y += line_height * (((float) i) - (((float) (num_lines - 1)) / 2.0));
-                font->draw(ci, text_ofs.floor(), line_text, color, clip_text ? text_clip : -1);
-
-                if (!_icon.is_null() && icon_region.size.width > 0) {
-                    draw_texture_rect_region(_icon, icon_region, Rect2(Point2(), _icon->get_size()), color_icon);
-                }
+				if (!_icon.is_null() && icon_region.size.width > 0) {
+					draw_texture_rect_region(_icon, icon_region, Rect2(Point2(), _icon->get_size()), color_icon);
+				}
 			}
-
 		} break;
 	}
 }
