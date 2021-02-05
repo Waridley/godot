@@ -1,6 +1,6 @@
 # Non functional cmake build file used to provide Android Studio editor support to the project.
 cmake_minimum_required(VERSION 3.6)
-project(godot)
+project(Discipline)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -16,4 +16,12 @@ add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 target_include_directories(${PROJECT_NAME}
         SYSTEM PUBLIC
         ${GODOT_ROOT_DIR}
-        ${GODOT_ROOT_DIR}/modules/gdnative/include)
+        ${GODOT_ROOT_DIR}/modules/gdnative/include
+        ${GODOT_ROOT_DIR}/thirdparty/bullet)
+
+add_definitions(
+        -DALSA_ENABLED -DALSAMIDI_ENABLED -DCOREAUDIO_ENABLED -DPULSEAUDIO_ENABLED -DWASAPI_ENABLED -DXAUDIO2_ENABLED -DJACK_ENABLED
+        -DIPHONE_ENABLED -DGAME_CENTER_ENABLED -DSTOREKIT_ENABLED -DICLOUD_ENABLED
+        -DUNIX_ENABLED -D__GNUC__ -DUDEV_ENABLED -DJOYDEV_ENABLED
+        -DDEBUG_ENABLED -DTOOLS_ENABLED -DMINIZIP_ENABLED
+)
