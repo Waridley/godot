@@ -799,7 +799,7 @@ void EditorFileSystem::_scan_new_dir(EditorFileSystemDirectory *p_dir, DirAccess
 
 				fi->type = ResourceFormatImporter::get_singleton()->get_resource_type(path);
 				fi->import_group_file = ResourceFormatImporter::get_singleton()->get_import_group_file(path);
-				fi->script_class_name = _get_global_script_class(fi->type, path, &fi->script_class_extends, &fi->script_class_icon_path);
+				set_file_script_class_name(path, fi);
 				fi->modified_time = 0;
 				fi->import_modified_time = 0;
 				fi->import_valid = ResourceLoader::is_import_valid(path);
@@ -825,13 +825,15 @@ void EditorFileSystem::_scan_new_dir(EditorFileSystemDirectory *p_dir, DirAccess
 			} else {
 				//new or modified time
 				fi->type = ResourceLoader::get_resource_type(path);
-				fi->script_class_name = _get_global_script_class(fi->type, path, &fi->script_class_extends, &fi->script_class_icon_path);
+				set_file_script_class_name(path, fi);
 				fi->deps = _get_dependencies(path);
 				fi->modified_time = mt;
 				fi->import_modified_time = 0;
 				fi->import_valid = true;
 			}
 		}
+
+		_queue_update_script_classes();
 
 		p_dir->files.push_back(fi);
 		p_progress.update(idx, total);
@@ -926,7 +928,7 @@ void EditorFileSystem::_scan_fs_changes(EditorFileSystemDirectory *p_dir, const 
 					fi->modified_time = FileAccess::get_modified_time(path);
 					fi->import_modified_time = 0;
 					fi->type = ResourceLoader::get_resource_type(path);
-					fi->script_class_name = _get_global_script_class(fi->type, path, &fi->script_class_extends, &fi->script_class_icon_path);
+					set_file_script_class_name(path, fi);
 					fi->import_valid = ResourceLoader::is_import_valid(path);
 					fi->import_group_file = ResourceLoader::get_import_group_file(path);
 
@@ -953,6 +955,8 @@ void EditorFileSystem::_scan_fs_changes(EditorFileSystemDirectory *p_dir, const 
 				}
 			}
 		}
+
+		_queue_update_script_classes();
 
 		da->list_dir_end();
 		memdelete(da);
@@ -1408,6 +1412,18 @@ Vector<String> EditorFileSystem::_get_dependencies(const String &p_path) {
 	return ret;
 }
 
+void EditorFileSystem::_deferred_set_file_script_class_name(const String &p_path, EditorFileSystemDirectory::FileInfo *r_file) {
+	r_file->script_class_name = _get_global_script_class(r_file->type, p_path, &r_file->script_class_extends, &r_file->script_class_icon_path);
+}
+
+void EditorFileSystem::set_file_script_class_name(const String &p_path, EditorFileSystemDirectory::FileInfo *r_file) {
+#ifndef NO_THREADS
+	files_to_set_script_class.insert(p_path, r_file);
+#else
+	_deferred_set_file_script_class_name(p_path, r_file);
+#endif
+}
+
 String EditorFileSystem::_get_global_script_class(const String &p_type, const String &p_path, String *r_extends, String *r_icon_path) const {
 
 	for (int i = 0; i < ScriptServer::get_language_count(); i++) {
@@ -1459,6 +1475,11 @@ void EditorFileSystem::update_script_classes() {
 	ScriptServer::global_classes_clear();
 	if (get_filesystem()) {
 		_scan_script_classes(get_filesystem());
+	}
+
+	for(Map<String, EditorFileSystemDirectory::FileInfo *>::Element *E = files_to_set_script_class.front(); E; E = E->next()) {
+		_deferred_set_file_script_class_name(E->key(), E->value());
+		files_to_set_script_class.erase(E);
 	}
 
 	ScriptServer::save_global_classes();
@@ -1543,7 +1564,7 @@ void EditorFileSystem::update_file(const String &p_file) {
 	}
 
 	fs->files[cpos]->type = type;
-	fs->files[cpos]->script_class_name = _get_global_script_class(type, p_file, &fs->files[cpos]->script_class_extends, &fs->files[cpos]->script_class_icon_path);
+	set_file_script_class_name(p_file, fs->files[cpos]);
 	fs->files[cpos]->import_group_file = ResourceLoader::get_import_group_file(p_file);
 	fs->files[cpos]->modified_time = FileAccess::get_modified_time(p_file);
 	fs->files[cpos]->deps = _get_dependencies(p_file);
@@ -1553,6 +1574,7 @@ void EditorFileSystem::update_file(const String &p_file) {
 	EditorResourcePreview::get_singleton()->check_for_invalidation(p_file);
 
 	call_deferred("emit_signal", "filesystem_changed"); //update later
+
 	_queue_update_script_classes();
 }
 

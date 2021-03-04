@@ -176,7 +176,7 @@ bool NativeScript::can_instance() const {
 Ref<Script> NativeScript::get_base_script() const {
 	NativeScriptDesc *script_data = get_script_desc();
 
-	if (!script_data)
+	if (!script_data || !script_data->base_data)
 		return Ref<Script>();
 
 	NativeScript *script = (NativeScript *)NSL->create_script();

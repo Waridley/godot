@@ -244,7 +244,12 @@ class EditorFileSystem : public Node {
 
 	void _move_group_files(EditorFileSystemDirectory *efd, const String &p_group_file, const String &p_new_location);
 
+	void _deferred_set_file_script_class_name(const String &p_path, EditorFileSystemDirectory::FileInfo *r_file);
+	void set_file_script_class_name(const String &p_path, EditorFileSystemDirectory::FileInfo *r_file);
+
 	Set<String> group_file_cache;
+
+	Map<String, EditorFileSystemDirectory::FileInfo *> files_to_set_script_class;
 
 protected:
 	void _notification(int p_what);
