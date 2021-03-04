@@ -509,7 +509,22 @@ Variant EditorData::instance_custom_type(const String &p_type, const String &p_i
 				ERR_FAIL_COND_V(!ob, Variant());
 				Node *n = Object::cast_to<Node>(ob);
 				if (n) {
-					n->set_name(p_type);
+					String name = p_type;
+
+					switch (ProjectSettings::get_singleton()->get("node/name_casing").operator int()) {
+						case Node::NAME_CASING_PASCAL_CASE:
+							break;
+						case Node::NAME_CASING_CAMEL_CASE: {
+							String n = name;
+							n[0] = n.to_lower()[0];
+							name = n;
+						} break;
+						case Node::NAME_CASING_SNAKE_CASE:
+							name = String(name).camelcase_to_underscore(true);
+							break;
+					}
+
+					n->set_name(name);
 				}
 				((Object *)ob)->set_script(script.get_ref_ptr());
 				return ob;
