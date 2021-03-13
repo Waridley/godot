@@ -364,6 +364,7 @@ private:
 	int dock_popup_selected;
 	Timer *dock_drag_timer;
 	bool docks_visible;
+	bool docks_loaded;
 
 	HBoxContainer *tabbar_container;
 	ToolButton *distraction_free;
@@ -690,6 +691,8 @@ public:
 
 	void set_docks_visible(bool p_show);
 	bool get_docks_visible() const;
+
+	bool are_docks_loaded() const;
 
 	void set_distraction_free_mode(bool p_enter);
 	bool is_distraction_free_mode_enabled() const;

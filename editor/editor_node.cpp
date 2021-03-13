@@ -800,6 +800,7 @@ void EditorNode::_sources_changed(bool p_exist) {
 		}
 
 		_load_docks();
+		docks_loaded = true;
 
 		if (defer_load_scene != "") {
 			load_scene(defer_load_scene);
@@ -5043,6 +5044,10 @@ bool EditorNode::get_docks_visible() const {
 	return docks_visible;
 }
 
+bool EditorNode::are_docks_loaded() const {
+	return docks_loaded;
+}
+
 void EditorNode::_toggle_distraction_free_mode() {
 
 	if (EditorSettings::get_singleton()->get("interface/editor/separate_distraction_mode")) {
@@ -5748,6 +5753,7 @@ EditorNode::EditorNode() {
 	changing_scene = false;
 	_initializing_addons = false;
 	docks_visible = true;
+	docks_loaded = false;
 	restoring_scenes = false;
 	cmdline_export_mode = false;
 	scene_distraction = false;

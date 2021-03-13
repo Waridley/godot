@@ -1641,7 +1641,7 @@ void NativeReloadNode::_notification(int p_what) {
 	switch (p_what) {
 		case MainLoop::NOTIFICATION_WM_FOCUS_OUT: {
 
-			if (unloaded)
+			if (unloaded || !EditorNode::get_singleton()->are_docks_loaded())
 				break;
 #ifndef NO_THREADS
 			MutexLock lock(NSL->mutex);
